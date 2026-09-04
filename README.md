@@ -1,169 +1,123 @@
-# 𓏲 I Have Something to Tell You ♡
-> An intimate, interactive romantic confession website crafted for **Frans Philoh** to confess his feelings to **Amaia Luna**.
+# 𓏲 somethingtotell ‧ order form & website ♡
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-somethingtotell.netlify.app-BD4558?style=for-the-badge&logo=netlify&logoColor=white)](https://somethingtotell.netlify.app)
-[![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)](https://somethingtotell.netlify.app)
-[![Responsive](https://img.shields.io/badge/Mobile--First-Responsive-FAF6F0?style=for-the-badge&colorA=2E1B1E&colorB=BD4558)](https://somethingtotell.netlify.app)
-[![Audio](https://img.shields.io/badge/Web_Audio-Synthesized_Organic_SFX-black?style=for-the-badge&logo=webrtc&logoColor=white)](https://somethingtotell.netlify.app)
+> **SOMETHINGTOTELL** adalah katalog website interaktif bertema *"i have something to tell you"* (romantic confession website & proposal) karya [@liltz](https://t.me/mirssy) / **catamourie**. Repositori ini memuat source code website utama serta halaman **Order Form** resmi yang siap dideploy ke GitHub Pages / Netlify.
 
 ---
 
-## ✦ Live Preview
+## 📌 Demo & Live Links
 
-🌐 **Website Link**: [https://somethingtotell.netlify.app](https://somethingtotell.netlify.app)  
-💌 **Direct Telegram Response**: [https://t.me/mirssy](https://t.me/mirssy)
-
----
-
-## ✦ About The Project
-
-**“I Have Something to Tell You”** (`somethingtotell`) adalah website pengakuan perasaan (*romantic confession website*) interaktif yang didesain secara intim, hangat, dan personal. Berbeda dari template romantis umum yang klise, website ini dibangun dengan pendekatan bercerita (*storytelling experience*) yang mendalam, membimbing penerima melewati rangkaian surat emosional, foto kenangan polaroid 3D, dan pengakuan yang tulus.
-
-### Detail Personalisasi:
-- **Pengirim (Shooter)**: Frans Philoh
-- **Penerima (Crush)**: Amaia Luna
-- **Pertanyaan Inti**: *"will you be mine?"*
-- **Tanda Tangan**: *— frans philoh*
-- **Tujuan Respon**: [t.me/mirssy](https://t.me/mirssy) (Otomatis menyalin jawaban dan membuka obrolan Telegram)
+- **Live Website**: [https://somethingtotell.netlify.app](https://somethingtotell.netlify.app)
+- **Form Pemesanan**: `https://<username>.github.io/somethingtotell/form.html` (atau rename ke `index.html` jika repo khusus form)
+- **Website Utama**: `https://<username>.github.io/somethingtotell/` (atau [somethingtotell.netlify.app](https://somethingtotell.netlify.app))
+- **Official Telegram**: [@mirssy](https://t.me/mirssy)
 
 ---
 
-## ✦ Alur Pengalaman & Fitur Utama
+## 💸 Struktur Harga (Pricing)
 
-```text
-[Step 1: Opening Card] ──> [Step 2: Layered Envelope] ──> [Step 3: Letter Part 1]
-                                                                    │
-[Step 6: Polaroid #2]  <── [Step 5: Letter Part 2]   <── [Step 4: Polaroid #1]
-       │
-       ▼
-[Step 7: Final Confession & Proposal] ──> [Copy to Clipboard] ──> [Redirect to Telegram]
-```
-
-1. **Step 1 — Opening (Stationery Cover Card)**  
-   Emblem bunga mawar vintage dengan judul yang mengundang: *"there’s something i’ve been wanting to tell you. and i don’t really know how to say it."*
-2. **Step 2 — The Physical Layered Envelope**  
-   Amplop surat berlapis vektor yang realistis, dilengkapi **vintage perforated postage stamp**, cap pos stempel pos udara (*"AIR MAIL · SPECIAL DELIVERY"*), dan sapaan tulisan tangan *"dear amaia luna,"*.
-3. **Step 3 — Confession Letter Part 1 (Yearning & Tender)**  
-   Kertas surat bergaris dengan watermark botanical flourish di sudut kertas, memuat satu paragraf mengalir penuh kerinduan dan apresiasi tulus atas kehadiran Amaia.
-4. **Step 4 — Memory Polaroid #1 (3D Flip Card)**  
-   Foto polaroid kenangan pertama berbingkai putih dengan tekstur selotip washi tape transparan. Saat ditekan, foto akan berputar 3D disertai efek suara klik dan menampilkan pesan rahasia di baliknya.
-5. **Step 5 — Confession Letter Part 2 (Vulnerable & Sincere)**  
-   Paragraf pengakuan yang lebih mendalam dan rentan mengenai keberanian untuk mengungkapkan perasaan yang telah lama disimpan.
-6. **Step 6 — Memory Polaroid #2 (3D Flip Card)**  
-   Foto polaroid kedua dengan interaksi flip 3D dan pesan tulisan tangan rahasia kedua.
-7. **Step 7 — Final Confession & The Proposal**  
-   Kalimat penutup dengan tanda tangan *— frans philoh*, disusul pertanyaan:
-   > **"will you be mine?"**
-8. **Interactive Typographic Answers (Zero Emojis)**  
-   - Tombol pilihan: **`YES, I WILL BE YOURS`** atau **`NO, SORRY`**.
-   - Ketika ditekan, jawaban otomatis tersalin ke clipboard, notifikasi halus (*toast*) muncul, dan penerima secara otomatis dialihkan ke Telegram Frans Philoh (**`https://t.me/mirssy`**).
-9. **Organic Sound Design (Web Audio API)**  
-   - Efek suara bawaan yang disintesis secara real-time di browser (suara gesekan kertas, membuka amplop, memutar foto polaroid, dan nada konfirmasi).
-   - **Tanpa tombol toggle musik yang mengganggu.** Suara hanya berbunyi secara alami saat ada interaksi fisik.
+- **Harga Dasar (Base Website)**: `Rp7.000`
+- **Recolor Custom Color Palette**: `+Rp2.000`
+- **Rush Fee (Deadline <24 Jam)**: `+Rp4.000`
+- **Metode Pembayaran**: QRIS (No Rate Fee)
 
 ---
 
-## ✦ Struktur Repositori
+## 🎨 Color Palette Default (Velvet Rose & Soft Linen)
+
+| Warna | Hex Code | Deskripsi |
+| :--- | :--- | :--- |
+| **Cream Linen** | `#FAF6F0` | Background utama & kertas surat |
+| **Velvet Rose** | `#BD4558` | Warna aksen utama / wax seal & tombol |
+| **Soft Petal** | `#F4CCD1` | Background badge / border halus / glow |
+| **Berry Espresso** | `#2E1B1E` | Teks utama dan elemen kontras tinggi |
+| **Muted Mauve** | `#82666A` | Teks sekunder, label, & garis halus |
+| **Parchment Line** | `#EFE4D6` | Garis pembatas lipatan amplop & tekstur |
+
+---
+
+## ✨ Fitur Order Form (`form.html`)
+
+1. **Ticket Stub Header**:
+   - Tampilan tiket estetik dengan perforasi garis putus-putus.
+   - Total harga terkalkulasi secara otomatis dan real-time.
+
+2. **Validasi & Color Picker Dinamis**:
+   - Pilihan recolor interaktif dengan 6 color picker terhubung ke input kode HEX.
+   - Validasi format HEX regex otomatis (`#RRGGBB`).
+
+3. **12 Bagian Form Terstruktur**:
+   - `00` ୵ **Customer Identity** (Nama, Username Telegram, QRIS, Tanggal Deadline, Checkbox Rush Fee).
+   - `01` ୵ **Custom Color Palette** (Pilihan no/yes + 6 color picker & hex input).
+   - `02` ୵ **Core Identity** (Nama Penembak / Pengirim, Panggilan Pengirim, Nama Crush / Penerima, Panggilan Penerima, Link Telegram Respon).
+   - `03` ୵ **Step 1 — Opening** (Stationery Card: Judul headline, subteks prompt, label tombol pembuka).
+   - `04` ୵ **Step 2 — The Envelope** (Instruksi buka amplop, sapaan di dalam surat amplop, tombol buka surat).
+   - `05` ୵ **Step 3 — Confession Letter Part 1** (Salutation header, isi paragraf mengalir penuh kerinduan & apresiasi tulus, tombol lanjut).
+   - `06` ୵ **Step 4 — Photo Memory 01** (Instruksi tap foto polaroid 3D, caption depan foto, pesan tulisan tangan rahasia di balik foto, tombol lanjut).
+   - `07` ୵ **Step 5 — Confession Letter Part 2** (Salutation kelanjutan, isi paragraf pengakuan rentan & niat tulus, tombol lanjut).
+   - `08` ୵ **Step 6 — Photo Memory 02** (Instruksi tap polaroid ke-2, caption depan foto, pesan rahasia di balik foto ke-2, tombol lanjut).
+   - `09` ୵ **Step 7 — Final Confession & Proposal** (Lead quote, kalimat penutup cinta, tanda tangan penembak, jeda, pertanyaan pengakuan *"will you be mine?"*, tombol pilihan *"YES, I WILL BE YOURS"* & *"NO, SORRY"*).
+   - `10` ୵ **Lampiran Foto** (Catatan instruksi melampirkan 2 foto portrait/square langsung via Telegram).
+   - `11` ୵ **Link Website** (Judul tab browser, 2 pilihan custom subdomain `.netlify.app`).
+
+4. **Satu Klik Salin & Buka Telegram**:
+   - Validasi input wajib.
+   - Merangkum form ke dalam teks rapi dengan simbol unicode (`𓏲 somethingtotell form ♡`).
+   - Teks otomatis tersalin ke clipboard pengguna.
+   - Membuka link `https://t.me/mirssy?text=...` dengan teks pesanan terisi otomatis.
+
+---
+
+## 📁 Struktur File
 
 ```text
 SOMETHINGTOTELL/
-│
-├── index.html              # Struktur utama & markup semantik pengalaman interaktif
-├── README.md               # Dokumentasi lengkap proyek & panduan deploy
-│
+├── index.html          # Website interaktif utama SOMETHINGTOTELL (7 Step Confession)
+├── form.html           # Halaman Form Pemesanan SOMETHINGTOTELL (Harga 7k)
+├── order.html          # Salinan form.html (opsi routing alternatif)
+├── README.md           # Dokumentasi repositori
 ├── css/
-│   └── style.css           # Desain visual velvet rose, tipografi editorial, 3D flip, responsive layout
-│
+│   └── style.css       # Styling CSS lengkap & responsif mobile/desktop
 ├── js/
-│   ├── config.js           # PENGATURAN UTAMA: nama, teks surat, foto, pesan rahasia & link chat
-│   ├── audio.js            # Generator sound effects organik berbasis Web Audio API
-│   └── app.js              # Logika transisi layar, interaksi flip foto, clipboard & navigasi
-│
+│   ├── config.js       # Konfigurasi data konten, nama Frans & Amaia, chat Telegram
+│   ├── audio.js        # Web Audio API organic sound effects synthesizer
+│   └── app.js          # Logika transisi, flip polaroid 3D, auto-copy & redirect
 └── assets/
-    └── photos/
-        ├── photo-1.jpg     # Foto polaroid kenangan 1 (Cafe hangat)
-        └── photo-2.jpg     # Foto polaroid kenangan 2 (Evening walk)
+    └── photos/         # Foto polaroid kenangan 1 & 2
+        ├── photo-1.jpg
+        └── photo-2.jpg
 ```
 
 ---
 
-## ✦ Panduan Kustomisasi
+## 🚀 Cara Upload & Hosting ke GitHub Pages
 
-Seluruh isi konten teks, nama, dan link tujuan dapat diubah dengan sangat mudah melalui satu file konfigurasi: [`js/config.js`](file:///d:/LILTZ/SOMETHINGTOTELL/js/config.js).
+### Opsi A: Menggabungkan Website & Form dalam Satu Repositori
+1. Push semua file repositori ini ke GitHub (`main` branch).
+2. Buka repository di GitHub -> Masuk ke tab **Settings** -> **Pages**.
+3. Pada bagian **Build and deployment**, pilih:
+   - **Source**: `Deploy from a branch`
+   - **Branch**: `main` / `/ (root)`
+4. Klik **Save**.
+5. Website kamu akan aktif di:
+   - Website Utama: `https://<username>.github.io/<repo-name>/` (atau deploy di Netlify: `https://somethingtotell.netlify.app`)
+   - Form Pemesanan: `https://<username>.github.io/<repo-name>/form.html`
 
-### 1. Mengubah Identitas & Link Telegram
-Buka `js/config.js` dan sesuaikan variabel berikut:
-```javascript
-const CONFIG = {
-  senderName: "frans philoh",
-  recipientName: "amaia luna",
-  chatLink: "https://t.me/mirssy", // Ganti dengan link Telegram kamu
-  // ...
-};
-```
-
-### 2. Mengganti Foto Polaroid
-1. Siapkan 2 foto dengan rasio **4:5** (portrait) atau **1:1** (square).
-2. Simpan foto ke dalam folder `assets/photos/` dengan nama:
-   - `assets/photos/photo-1.jpg` (foto pertama)
-   - `assets/photos/photo-2.jpg` (foto kedua)
-3. Pesan di balik foto dapat disesuaikan pada bagian `photo1.message` dan `photo2.message` di `js/config.js`.
+### Opsi B: Khusus Halaman Form Saja (seperti `liltzweb.github.io/somethingtotell/`)
+1. Jika repositori ini ditujukan **khusus** untuk form pemesanan:
+   - Rename `form.html` menjadi `index.html`.
+2. Push ke GitHub dan aktifkan GitHub Pages.
+3. Form akan langsung terbuka di `https://<username>.github.io/<repo-name>/`.
 
 ---
 
-## ✦ Cara Publikasi Online (Deployment)
+## 📜 Terms & Conditions
 
-### Opsi A: Netlify (Direkomendasikan — Sama Seperti Demo)
-Website ini saat ini aktif di [somethingtotell.netlify.app](https://somethingtotell.netlify.app). Untuk mendeploy versimu sendiri:
-1. Buka [app.netlify.com/drop](https://app.netlify.com/drop).
-2. Seret dan lepas (*drag & drop*) seluruh folder `SOMETHINGTOTELL`.
-3. Dalam hitungan detik website akan langsung online.
-4. Kamu dapat mengubah nama subdomain (misal `somethingtotell.netlify.app`) di menu **Site configuration > Change site name**.
-
-### Opsi B: GitHub Pages
-1. Buat repository baru di [GitHub](https://github.com/new) bernama `somethingtotell`.
-2. Upload semua file dan folder (`index.html`, `css/`, `js/`, `assets/`, `README.md`) ke repository tersebut:
-   ```bash
-   git init
-   git add .
-   git commit -m "feat: initial commit of romantic confession website"
-   git branch -M main
-   git remote add origin https://github.com/<username>/somethingtotell.git
-   git push -u origin main
-   ```
-3. Buka tab **Settings** di repository GitHub kamu.
-4. Di panel sebelah kiri, pilih menu **Pages**.
-5. Pada bagian **Build and deployment > Branch**, pilih branch `main` dan folder `/ (root)`.
-6. Klik **Save**. Dalam 1–2 menit website akan live di:
-   ```text
-   https://<username>.github.io/somethingtotell/
-   ```
+1. Seluruh desain, kode, dan konten adalah hak cipta **catamourie** / [@liltz](https://t.me/mirssy).
+2. Dilarang mendistribusikan ulang, menjual ulang kode mentah, atau mengklaim kepemilikan desain tanpa izin.
+3. Pemesanan resmi hanya melalui Telegram: [@mirssy](https://t.me/mirssy).
 
 ---
 
-## ✦ Teknologi & Desain Sistem
-
-- **Tipografi**:
-  - *Display / Serif*: [Playfair Display](https://fonts.google.com/specimen/Playfair+Display) (Elegan, puitis, dan berjiwa klasik)
-  - *Body / Sans*: [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) (Modern, hangat, dan sangat nyaman dibaca di layar ponsel)
-- **Color Palette (Velvet Rose & Soft Linen)**:
-  - Cream Canvas: `#FAF6F0`
-  - Velvet Rose Accent: `#BD4558`
-  - Soft Petal Blush: `#F4CCD1`
-  - Espresso Berry Ink: `#2E1B1E`
-  - Muted Mauve Stone: `#82666A`
-  - Vintage Parchment Border: `#EFE4D6`
-- **Zero Framework & Zero Dependencies**: Murni HTML5, CSS3, dan Vanilla JavaScript ringan tanpa beban loading library eksternal.
-- **Audio Sintesis**: Menggunakan **Web Audio API** native browser, memastikan audio selalu dapat diputar tanpa ketergantungan file MP3 eksternal.
-
----
-
-## ✦ Catatan Privasi & Penggunaan
-
-- Website ini bersifat statis dan aman. Jawaban penerima tidak disimpan di server pihak ketiga mana pun, melainkan disalin langsung ke clipboard perangkat mereka dan diarahkan secara pribadi ke chat Telegram yang telah ditentukan.
-- Desain dan konten orisinal dipersembahkan dengan ketulusan dan kehangatan oleh @liltz / catamourie.
-
----
-<p align="center">
-  <i>crafted with sincerity & warmth for frans philoh & amaia luna ♡</i>
-</p>
+<div align="center">
+  <sub>crafted with care by @liltz ‧ thank you for trusting somethingtotell ♡</sub>
+</div>
