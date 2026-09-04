@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>somethingtotell ‧ order form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=JetBrains+Mono:wght@400;500;600&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#191919;
+    --paper:#222222;
+    --input-bg:#171717;
+    --tag-bg:#282828;
+    --ink:#F1F1F1;
+    --stone:#969696;
+    --faded:#6E6E6E;
+    --thread:#E38A9B;
+    --accent:#E38A9B;
+    --powder:#282828;
+    --powder-deep:#303030;
+    --line:#303030;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(227,138,155,0.08), transparent 40%),
+      radial-gradient(circle at 90% 15%, rgba(35,35,35,0.6), transparent 45%),
+      var(--canvas);
+    color:var(--ink);
+    font-family:'Karla', sans-serif;
+    line-height:1.5;
+    padding-bottom:80px;
+  }
+  a{color:inherit;}
+
+  .ticket{max-width:640px; margin:36px auto 8px; padding:0 20px;}
+  .ticket-inner{
+    background:var(--paper); border-radius:var(--radius);
+    box-shadow:0 1px 2px rgba(0,0,0,0.4), 0 10px 30px rgba(0,0,0,0.5);
+    padding:34px 30px 26px; position:relative; overflow:hidden; border:1px solid var(--line);
+  }
+  .ticket-inner::before{
+    content:""; position:absolute; inset:0;
+    background:repeating-linear-gradient(90deg, transparent 0 6px, rgba(255,255,255,0.02) 6px 7px);
+    opacity:.5; pointer-events:none;
+  }
+  .stub-row{display:flex; justify-content:space-between; align-items:flex-start; gap:16px;}
+  .eyebrow{font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--thread); margin:0 0 6px;}
+  h1.title{font-family:'Fraunces', serif; font-weight:500; font-size:30px; margin:0; letter-spacing:-0.01em; line-height:1.2; color:var(--ink);}
+  h1.title em{font-style:italic; color:var(--thread); font-weight:500;}
+  .price-tag{text-align:right; font-family:'JetBrains Mono', monospace; flex-shrink:0;}
+  .price-tag .label{font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--stone);}
+  .price-tag .amount{font-size:22px; font-weight:600; color:var(--thread);}
+  .perforation{height:0; border-top:2px dashed rgba(241,241,241,0.2); margin:24px -30px 0; position:relative;}
+  .perforation::before,.perforation::after{content:""; position:absolute; top:-9px; width:18px; height:18px; border-radius:50%; background:var(--canvas);}
+  .perforation::before{left:-9px;} .perforation::after{right:-9px;}
+
+  .wrap{max-width:640px; margin:0 auto; padding:0 20px;}
+  .exhibit{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); margin-top:18px; overflow:hidden;}
+  .exhibit-head{
+    display:flex; align-items:baseline; gap:12px; padding:18px 24px 14px;
+    border-bottom:1px solid var(--line); background:linear-gradient(180deg, rgba(227,138,155,0.06), transparent);
+  }
+  .exhibit-num{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--thread); background:rgba(227,138,155,0.14); padding:3px 8px; border-radius:20px; letter-spacing:.05em;}
+  .exhibit-title{font-family:'Fraunces', serif; font-size:19px; font-weight:500; margin:0; color:var(--ink);}
+  .exhibit-note{font-size:12.5px; color:var(--stone); margin:2px 0 0 auto; text-align:right; font-style:italic;}
+  .exhibit-body{padding:20px 24px 24px; display:grid; gap:16px;}
+
+  .field{display:grid; gap:6px;}
+  .field label{font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:.04em; color:var(--stone);}
+  .field label .req{color:var(--thread);}
+  .field input[type=text], .field input[type=date], .field textarea{
+    font-family:'Karla', sans-serif; font-size:14.5px; padding:10px 12px; border-radius:9px;
+    border:1px solid var(--line); background:var(--input-bg); color:var(--ink); width:100%; resize:vertical;
+  }
+  .field input:focus, .field textarea:focus{outline:2px solid var(--thread); outline-offset:1px; background:#1C1C1C;}
+  .field textarea{min-height:56px;}
+  .field .default-hint{font-size:11.5px; color:var(--stone); opacity:.8;}
+  .field input.invalid, .field textarea.invalid, .link-suffix.invalid{border-color:#FF4D67 !important; background:#2E1519 !important; color:#FFF !important;}
+
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:520px){.row2{grid-template-columns:1fr;}}
+
+  .radio-group{display:flex; gap:10px;}
+  .radio-pill{flex:1; text-align:center; padding:9px 10px; border-radius:9px; border:1px solid var(--line); cursor:pointer; font-size:13.5px; background:var(--input-bg); color:var(--ink); transition:background .15s, border-color .15s;}
+  .radio-pill input{display:none;}
+  .radio-pill.active{background:rgba(227,138,155,0.22); border-color:var(--thread); font-weight:600; color:var(--ink);}
+
+  .swatches{display:flex; gap:8px; flex-wrap:wrap;}
+  .swatch{display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono', monospace; font-size:11px; background:var(--input-bg); border:1px solid var(--line); padding:5px 9px 5px 5px; border-radius:20px; color:var(--ink);}
+  .swatch i{width:16px; height:16px; border-radius:50%; display:inline-block; border:1px solid rgba(255,255,255,0.15);}
+  .palette-inputs{display:none; flex-direction:column; gap:8px;}
+  .palette-inputs.show{display:flex;}
+  .palette-row{display:flex; align-items:center; gap:8px;}
+  .palette-inputs input[type=color]{width:38px; height:38px; padding:0; border:1px solid var(--line); border-radius:9px; background:none; cursor:pointer; flex-shrink:0;}
+  .palette-inputs input[type=text]{font-family:'JetBrains Mono', monospace; font-size:13.5px; padding:9px 10px; border-radius:9px; border:1px solid var(--line); background:var(--input-bg); color:var(--ink); width:110px; text-transform:uppercase;}
+  .palette-inputs input[type=text].invalid{border-color:#FF4D67 !important; background:#2E1519 !important;}
+
+  .checkbox-line{display:flex; align-items:center; gap:9px; font-size:13.5px; background:var(--tag-bg); padding:10px 12px; border-radius:9px; color:var(--ink); border:1px solid var(--line); cursor:pointer;}
+  .checkbox-line input{width:16px; height:16px; accent-color:var(--thread); cursor:pointer;}
+
+  .note-block{border:1px dashed var(--line); border-radius:9px; padding:14px 12px; background:var(--input-bg); font-size:13px; color:var(--stone); line-height:1.6;}
+
+  .link-suffix{display:flex; align-items:center; border:1px solid var(--line); border-radius:9px; overflow:hidden; background:var(--input-bg);}
+  .link-suffix input{border:none; background:transparent; flex:1; padding:10px 12px; font-size:14.5px; font-family:'Karla',sans-serif; color:var(--ink);}
+  .link-suffix span{padding:0 12px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--stone); border-left:1px solid var(--line); align-self:stretch; display:flex; align-items:center; background:var(--tag-bg);}
+
+  .generate-block{margin-top:22px; text-align:center;}
+  .btn{font-family:'JetBrains Mono', monospace; font-size:13px; font-weight:700; letter-spacing:.04em; padding:14px 26px; border-radius:30px; border:1px solid var(--thread); background:var(--thread); color:#191919; cursor:pointer; transition:transform .15s, opacity .15s, background .15s;}
+  .btn:hover{transform:translateY(-1px); background:#EB9DB0;}
+  .btn:active{transform:translateY(0);}
+  .btn.secondary{background:transparent; color:var(--ink); border-color:var(--line);}
+  .btn.secondary:hover{border-color:var(--thread); color:var(--thread); background:transparent;}
+
+  .output-card{display:none; margin-top:20px; background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:20px;}
+  .output-card.show{display:block;}
+  .output-card h3{font-family:'Fraunces', serif; font-weight:500; font-size:17px; margin:0 0 10px; color:var(--ink);}
+  .output-card pre{white-space:pre-wrap; word-break:break-word; font-family:'JetBrains Mono', monospace; font-size:12.2px; line-height:1.65; background:var(--input-bg); border:1px solid var(--line); border-radius:9px; padding:16px; max-height:360px; overflow-y:auto; color:var(--ink); text-align:left;}
+  .output-actions{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;}
+  .output-actions .btn{flex:1; min-width:150px;}
+  .copied-msg{font-size:12.5px; color:var(--thread); margin-top:8px; display:none; font-weight:700;}
+
+  footer.paw{text-align:center; font-size:12px; color:var(--stone); margin-top:40px; font-family:'JetBrains Mono', monospace; letter-spacing:.06em;}
+</style>
+</head>
+<body>
+
+<div class="ticket">
+  <div class="ticket-inner">
+    <div class="stub-row">
+      <div>
+        <p class="eyebrow">not a one-time sale ‧ ready-made website</p>
+        <h1 class="title">somethingtotell <em>form</em> ♡</h1>
+      </div>
+      <div class="price-tag">
+        <div class="label">total</div>
+        <div class="amount" id="priceOut">Rp7.000</div>
+      </div>
+    </div>
+    <div class="perforation"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="exhibit" id="tncCard">
+    <div class="exhibit-head">
+      <span class="exhibit-num">t&c</span>
+      <h2 class="exhibit-title">terms & condition</h2>
+    </div>
+    <div class="exhibit-body" style="gap:12px;">
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(a.)</strong> please read all terms and conditions carefully before placing an order.</p>
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(b.)</strong> ready-made websites allow buyers to change names, colors, texts, music, and photos. buyers may also request simple decorations for an additional fee of idr 3,000. changing the color palette will cost an additional idr 2,000. buyers may also use wording provided by the seller, with the condition that the wording used must be exactly the same as the wording available in the catalog and will not incur any additional fee. each ready-made website design may be sold to and used by more than one buyer, meaning the purchase is not exclusive.</p>
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(c.)</strong> custom websites start from idr 10,000, with the final price depending on the complexity of the website requested by the buyer. simple revisions are allowed up to 3 times. revisions required due to seller's mistakes are free of charge. revisions exceeding 3 times or major revisions may be subject to an additional fee depending on the scope and difficulty of the changes.</p>
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(d.)</strong> full payment must be made before the website is processed. payment is accepted only through qris, with no additional payment fee.</p>
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(e.)</strong> website processing usually takes 1–7 days after payment has been made, depending on the queue and buyer's response. if you need the website to be completed within 24 hours before your deadline, an additional idr 4,000 rush fee will apply.</p>
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(f.)</strong> no refunds or cancellations are accepted after the website has been sent.</p>
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(g.)</strong> all designs, codes, and contents belong to catamourie. copying, reselling, redistributing, or claiming them as your own is strictly prohibited. by ordering through @liltz, buyers agree to all terms above.</p>
+    </div>
+  </section>
+</div>
+
+<div class="wrap" id="formRoot"></div>
+
+<div class="wrap generate-block">
+  <button class="btn" id="generateBtn">submit</button>
+  <p style="font-size:12px; color:var(--stone); margin-top:10px; font-family:'JetBrains Mono', monospace;">
+    tekan submit → teks pesanan otomatis tersalin ke clipboard & chat <a href="https://t.me/mirssy" target="_blank" rel="noopener" style="color:var(--thread); font-weight:600;">t.me/mirssy</a> kebuka, tinggal paste, lalu lampirkan 2 foto & musik langsung di sana.
+  </p>
+  <p id="formError" style="display:none; font-size:13px; color:var(--thread); font-weight:700; margin-top:10px;"></p>
+  <div class="output-card" id="outputCard">
+    <h3>form kamu</h3>
+    <pre id="outputText"></pre>
+    <div class="output-actions">
+      <button class="btn secondary" id="copyBtn">salin teks lagi</button>
+      <a class="btn" href="https://t.me/mirssy" target="_blank" rel="noopener">buka t.me/mirssy</a>
+    </div>
+    <p id="sendStatus" style="font-size:12px; color:var(--stone); margin:10px 0 0;"></p>
+    <p class="copied-msg" id="copiedMsg"></p>
+  </div>
+</div>
+
+<footer class="paw">𓏲 ‧ thank you for trusting somethingtotell ‧ 𓏲</footer>
+
+<script>
+const DEFAULT_PALETTE = ['#FAF6F0', '#BD4558', '#F4CCD1', '#2E1B1E', '#82666A', '#EFE4D6'];
+
+const root = document.getElementById('formRoot');
+function el(html){ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstElementChild; }
+
+function fieldRow(f){
+  if(f.long){
+    return `
+    <div class="field">
+      <label for="${f.key}">${f.label}</label>
+      <textarea id="${f.key}" data-key="${f.key}" placeholder="${f.def.replace(/"/g,'&quot;')}"></textarea>
+      <span class="default-hint">default: ${f.def.replace(/\n/g,' ')}</span>
+    </div>`;
+  }
+  return `
+  <div class="field">
+    <label for="${f.key}">${f.label}</label>
+    <input type="text" id="${f.key}" data-key="${f.key}" placeholder="${f.def.replace(/"/g,'&quot;')}">
+    <span class="default-hint">default: ${f.def}</span>
+  </div>`;
+}
+
+// ---------- 00 customer identity ----------
+root.appendChild(el(`
+<section class="exhibit">
+  <div class="exhibit-head">
+    <span class="exhibit-num">00</span>
+    <h2 class="exhibit-title">customer identity</h2>
+  </div>
+  <div class="exhibit-body">
+    <div class="row2">
+      <div class="field"><label>name <span class="req">*</span></label><input type="text" id="cust_name" data-key="cust_name" placeholder="nama kamu"></div>
+      <div class="field"><label>username <span class="req">*</span></label><input type="text" id="cust_username" data-key="cust_username" placeholder="@username"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>payment</label><input type="text" value="qris no rate" disabled></div>
+      <div class="field"><label>deadline <span class="req">*</span></label><input type="date" id="deadline" data-key="deadline"></div>
+    </div>
+    <label class="checkbox-line">
+      <input type="checkbox" id="rush">
+      need it done within 24 hours before deadline (+4.000 rush fee — poin (e) t&c)
+    </label>
+  </div>
+</section>`));
+
+// ---------- 01 custom color palette ----------
+const paletteRowsHtml = DEFAULT_PALETTE.map((hex,i)=>`
+        <div class="palette-row">
+          <input type="color" value="${hex}" data-idx="${i}" data-pair="hex${i}">
+          <input type="text" id="hex${i}" value="${hex}" maxlength="7" placeholder="${hex}">
+        </div>`).join('');
+
+root.appendChild(el(`
+<section class="exhibit">
+  <div class="exhibit-head">
+    <span class="exhibit-num">01</span>
+    <h2 class="exhibit-title">custom color palette</h2>
+    <p class="exhibit-note">recolor +2.000</p>
+  </div>
+  <div class="exhibit-body">
+    <div class="field">
+      <label>recolor</label>
+      <div class="radio-group">
+        <label class="radio-pill" id="pillNo"><input type="radio" name="recolor" value="no" checked>no</label>
+        <label class="radio-pill" id="pillYes"><input type="radio" name="recolor" value="yes">yes</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>default palette</label>
+      <div class="swatches" id="defaultSwatches"></div>
+    </div>
+    <div class="field">
+      <label>new palette</label>
+      <div class="palette-inputs" id="paletteInputs">${paletteRowsHtml}</div>
+    </div>
+  </div>
+</section>`));
+
+const swatchWrap = document.getElementById('defaultSwatches');
+DEFAULT_PALETTE.forEach(hex=>{
+  swatchWrap.appendChild(el(`<span class="swatch"><i style="background:${hex}"></i>${hex}</span>`));
+});
+document.querySelectorAll('input[name=recolor]').forEach(r=>{
+  r.addEventListener('change', ()=>{
+    document.getElementById('pillYes').classList.toggle('active', r.value==='yes' && r.checked);
+    document.getElementById('pillNo').classList.toggle('active', r.value==='no' && r.checked);
+    document.getElementById('paletteInputs').classList.toggle('show', document.querySelector('input[name=recolor]:checked').value==='yes');
+    updatePrice();
+  });
+});
+document.getElementById('pillNo').classList.add('active');
+
+document.querySelectorAll('#paletteInputs input[type=color]').forEach(colorInput=>{
+  const hexInput = document.getElementById(colorInput.dataset.pair);
+  colorInput.addEventListener('input', ()=>{
+    hexInput.value = colorInput.value.toUpperCase();
+    hexInput.classList.remove('invalid');
+  });
+});
+document.querySelectorAll('#paletteInputs input[type=text]').forEach(hexInput=>{
+  hexInput.addEventListener('input', ()=>{
+    let v = hexInput.value.trim();
+    if(v && !v.startsWith('#')) v = '#' + v;
+    hexInput.value = v.toUpperCase();
+    const valid = /^#[0-9A-F]{6}$/.test(hexInput.value);
+    hexInput.classList.toggle('invalid', !valid && hexInput.value !== '');
+    if(valid){
+      const colorInput = document.querySelector(`#paletteInputs input[type=color][data-pair="${hexInput.id}"]`);
+      colorInput.value = hexInput.value;
+    }
+  });
+});
+
+const SECTIONS = [
+  { id:'02', title:'core identity', fields:[
+    {key:'sender_name', label:'sender full name (who made the site)', def:'Frans Philoh'},
+    {key:'sender_first', label:'sender nickname / first name', def:'Frans'},
+    {key:'recipient_name', label:'recipient full name (who receives the site)', def:'Amaia Luna'},
+    {key:'recipient_first', label:'recipient nickname / first name', def:'Amaia'},
+    {key:'chat_destination', label:'chat destination (e.g. telegram / crush reply link)', def:'https://t.me/mirssy'},
+  ]},
+  { id:'03', title:'step 1 — opening (stationery card)', fields:[
+    {key:'s1_headline', label:'opening headline title', def:'there’s something i’ve been wanting to tell you.'},
+    {key:'s1_subtext', label:'opening subtext prompt', def:'and i don’t really know how to say it.'},
+    {key:'s1_btn', label:'opening button label', def:'read what i couldn’t say'},
+  ]},
+  { id:'04', title:'step 2 — the envelope', fields:[
+    {key:'s2_hint', label:'hint instruction text', def:'tap to open'},
+    {key:'s2_greeting', label:'envelope letter greeting', def:'dear amaia luna,'},
+    {key:'s2_btn', label:'open button / action label', def:'read my letter'},
+  ]},
+  { id:'05', title:'step 3 — confession letter part 1', fields:[
+    {key:'s3_salutation', label:'letter salutation header', def:'dear amaia luna,'},
+    {key:'s3_text', label:'confession letter paragraph 1 (tender & heartfelt yearning)', def:"i don't know exactly when it started, amaia, but somewhere along the quiet hours of my days, you became the only thought my mind kept returning to. it was in the small, unnoticed things—the effortless way you smile, the warmth in the sound of your voice, and how even the most ordinary moments suddenly felt gentle and full whenever you were around. at first, i tried telling myself it was nothing more than a passing admiration, but with every passing day, this feeling only grew deeper, settling into every corner of my heart without asking for permission. you slowly became the first person i wished to tell about my day, the quiet comfort in my chaos, and the last thought that lulled me to sleep every single night.", long:true},
+    {key:'s3_btn', label:'continue button label', def:'continue reading'},
+  ]},
+  { id:'06', title:'step 4 — photo memory 01 (polaroid 1)', fields:[
+    {key:'s4_instruction', label:'flip hint instruction', def:'tap the photo.'},
+    {key:'s4_caption', label:'polaroid front caption', def:'a quiet moment'},
+    {key:'s4_message', label:'secret note behind photo 1', def:'one of the quiet little moments where you unknowingly took my whole heart.', long:true},
+    {key:'s4_btn', label:'continue button label', def:'continue reading'},
+  ]},
+  { id:'07', title:'step 5 — confession letter part 2', fields:[
+    {key:'s5_salutation', label:'letter continuation header', def:'to amaia luna,'},
+    {key:'s5_text', label:'confession letter paragraph 2 (vulnerable confession & sincerity)', def:"to be honest, it took me so long to gather the courage to write this down. there's always that quiet fear that putting feelings into words might change things, but keeping all of this inside has become impossible. i can't keep pretending that my heart doesn't skip a beat every time i see you, or that your presence doesn't completely shift my world. i like you, amaia—deeply, genuinely, and with everything i have. i have fallen for you in a way that feels so natural yet completely overwhelming, and all i know now is that i don't want to imagine my days without you in them anymore.", long:true},
+    {key:'s5_btn', label:'continue button label', def:'there is one more thing'},
+  ]},
+  { id:'08', title:'step 6 — photo memory 02 (polaroid 2)', fields:[
+    {key:'s6_instruction', label:'flip hint instruction', def:"there's another thing i wanted you to see."},
+    {key:'s6_caption', label:'polaroid front caption', def:'with you'},
+    {key:'s6_message', label:'secret note behind photo 2', def:'the exact moment i realized you are the only one i want to stay with.', long:true},
+    {key:'s6_btn', label:'continue button label', def:'read the final question'},
+  ]},
+  { id:'09', title:'step 7 — final confession & proposal', fields:[
+    {key:'s7_lead', label:'lead-in text', def:'so after everything i’ve kept inside for so long...'},
+    {key:'s7_text', label:'final confession paragraph', def:"i don't want to keep this as just a quiet wish in my head. i want to be there for you—in your good days, your difficult evenings, and all the mundane moments in between. i want to hold your hand, listen to everything you have to say, and cherish you the way you deserve to be cherished.", long:true},
+    {key:'s7_signature', label:'signature line', def:'— frans philoh'},
+    {key:'s7_pause', label:'pause prompt', def:'so with all my heart and sincerity...'},
+    {key:'s7_question', label:'confession question', def:'will you be mine?'},
+    {key:'s7_btn_yes', label:'accept button label', def:'YES, I WILL BE YOURS'},
+    {key:'s7_btn_no', label:'decline button label', def:'NO, SORRY'},
+  ]},
+];
+
+SECTIONS.forEach(sec=>{
+  const fieldsHtml = sec.fields.map(f=>fieldRow(f)).join('');
+  const card = el(`
+  <section class="exhibit">
+    <div class="exhibit-head">
+      <span class="exhibit-num">${sec.id}</span>
+      <h2 class="exhibit-title">${sec.title}</h2>
+    </div>
+    <div class="exhibit-body">${fieldsHtml}</div>
+  </section>`);
+  root.appendChild(card);
+});
+
+// ---------- 10 photos & music ----------
+root.appendChild(el(`
+<section class="exhibit">
+  <div class="exhibit-head">
+    <span class="exhibit-num">10</span>
+    <h2 class="exhibit-title">photos & music</h2>
+    <p class="exhibit-note">telegram attachment</p>
+  </div>
+  <div class="exhibit-body">
+    <div class="note-block">
+      lampirkan file berikut langsung di telegram sesudah submit form:<br>
+      • <strong>foto 1 (polaroid 1 — first memory photo)</strong> — rasio 4:5 portrait atau 1:1 square<br>
+      • <strong>foto 2 (polaroid 2 — second memory photo)</strong> — rasio 4:5 portrait atau 1:1 square<br>
+      • <strong>background music (optional)</strong> — 1 file audio format .mp3 jika ingin lagu custom
+    </div>
+  </div>
+</section>`));
+
+// ---------- 11 link ----------
+root.appendChild(el(`
+<section class="exhibit">
+  <div class="exhibit-head">
+    <span class="exhibit-num">11</span>
+    <h2 class="exhibit-title">link</h2>
+    <p class="exhibit-note">2 options required</p>
+  </div>
+  <div class="exhibit-body">
+    <div class="field">
+      <label>website title</label>
+      <input type="text" id="website_title" data-key="website_title" placeholder="something to tell you">
+    </div>
+    <div class="field">
+      <label>custom link option 01 <span class="req">*</span></label>
+      <div class="link-suffix"><input type="text" id="link1" placeholder="name"><span>.netlify.app</span></div>
+    </div>
+    <div class="field">
+      <label>custom link option 02 <span class="req">*</span></label>
+      <div class="link-suffix"><input type="text" id="link2" placeholder="name"><span>.netlify.app</span></div>
+    </div>
+    <p class="default-hint">note: link seperti somethingtotell.netlify.app hanya bisa dipakai oleh satu website, jadi kasih 2 opsi ya!</p>
+  </div>
+</section>`));
+
+// ---------- price ----------
+function updatePrice(){
+  let total = 7000;
+  if(document.querySelector('input[name=recolor]:checked').value==='yes') total += 2000;
+  if(document.getElementById('rush').checked) total += 4000;
+  document.getElementById('priceOut').textContent = 'Rp' + total.toLocaleString('id-ID');
+}
+document.getElementById('rush').addEventListener('change', updatePrice);
+updatePrice();
+
+// ---------- validasi ----------
+function validateForm(){
+  let firstInvalid = null;
+  const invalidEls = [];
+  const requiredIds = ['cust_name', 'cust_username', 'deadline'];
+  requiredIds.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el){
+      const empty = !el.value.trim();
+      el.classList.toggle('invalid', empty);
+      if(empty){ invalidEls.push(el); if(!firstInvalid) firstInvalid = el; }
+    }
+  });
+  document.querySelectorAll('.link-suffix').forEach(wrap=>{
+    const input = wrap.querySelector('input');
+    const empty = !input.value.trim();
+    wrap.classList.toggle('invalid', empty);
+    if(empty){ invalidEls.push(input); if(!firstInvalid) firstInvalid = input; }
+  });
+  return { valid: invalidEls.length === 0, firstInvalid, count: invalidEls.length };
+}
+
+document.addEventListener('input', (e)=>{
+  if(e.target.matches('.field input, .field textarea')) e.target.classList.remove('invalid');
+  if(e.target.closest('.link-suffix')) e.target.closest('.link-suffix').classList.remove('invalid');
+});
+
+// ---------- generate summary ----------
+function val(id, fallback){
+  const e = document.getElementById(id);
+  if(!e) return fallback||'';
+  const v = e.value.trim();
+  return v ? v : (fallback||'');
+}
+function fval(key, def){
+  const e = document.querySelector(`[data-key="${key}"]`);
+  const v = e ? e.value.trim() : '';
+  return v ? v : def;
+}
+
+function buildSummaryText(){
+  const recolor = document.querySelector('input[name=recolor]:checked').value;
+  const rush = document.getElementById('rush').checked;
+  let newPaletteLine = '';
+  if(recolor==='yes'){
+    const hexes = Array.from(document.querySelectorAll('#paletteInputs input[type=text]')).map(i=>i.value.trim().toUpperCase());
+    newPaletteLine = hexes.join(', ');
+  }
+
+  const lines = [];
+  lines.push('𓏲 somethingtotell form ♡');
+  lines.push('website price : ' + document.getElementById('priceOut').textContent);
+  lines.push('');
+  lines.push('𝟶𝟶 ୵ customer identity.');
+  lines.push('name : ' + val('cust_name'));
+  lines.push('username : ' + val('cust_username'));
+  lines.push('payment : qris no rate.');
+  lines.push('deadline : ' + val('deadline') + (rush ? ' (rush — within 24h before deadline, +4.000)' : ''));
+  lines.push('');
+  lines.push('𝟶𝟷 ୵ custom color palette.');
+  lines.push('recolor : ' + recolor);
+  lines.push('default palette : ' + DEFAULT_PALETTE.join(', '));
+  lines.push('new palette : ' + (newPaletteLine || '-'));
+  lines.push('');
+  lines.push('𝟶𝟸 ୵ core identity.');
+  lines.push('sender full name → ' + fval('sender_name', 'Frans Philoh'));
+  lines.push('sender nickname → ' + fval('sender_first', 'Frans'));
+  lines.push('recipient full name → ' + fval('recipient_name', 'Amaia Luna'));
+  lines.push('recipient nickname → ' + fval('recipient_first', 'Amaia'));
+  lines.push('chat destination → ' + fval('chat_destination', 'https://t.me/mirssy'));
+  lines.push('');
+  lines.push('𝟶𝟹 ୵ step 1 — opening (stationery card).');
+  lines.push('headline → ' + fval('s1_headline', 'there’s something i’ve been wanting to tell you.'));
+  lines.push('subtext → ' + fval('s1_subtext', 'and i don’t really know how to say it.'));
+  lines.push('button → ' + fval('s1_btn', 'read what i couldn’t say'));
+  lines.push('');
+  lines.push('𝟶𝟺 ୵ step 2 — the envelope.');
+  lines.push('hint → ' + fval('s2_hint', 'tap to open'));
+  lines.push('greeting → ' + fval('s2_greeting', 'dear amaia luna,'));
+  lines.push('button → ' + fval('s2_btn', 'read my letter'));
+  lines.push('');
+  lines.push('𝟶𝟻 ୵ step 3 — confession letter part 1.');
+  lines.push('salutation → ' + fval('s3_salutation', 'dear amaia luna,'));
+  lines.push('letter text → ' + fval('s3_text', "i don't know exactly when it started, amaia, but somewhere along the quiet hours of my days, you became the only thought my mind kept returning to. it was in the small, unnoticed things—the effortless way you smile, the warmth in the sound of your voice, and how even the most ordinary moments suddenly felt gentle and full whenever you were around. at first, i tried telling myself it was nothing more than a passing admiration, but with every passing day, this feeling only grew deeper, settling into every corner of my heart without asking for permission. you slowly became the first person i wished to tell about my day, the quiet comfort in my chaos, and the last thought that lulled me to sleep every single night."));
+  lines.push('button → ' + fval('s3_btn', 'continue reading'));
+  lines.push('');
+  lines.push('𝟶𝟼 ୵ step 4 — photo memory 01 (polaroid 1).');
+  lines.push('instruction → ' + fval('s4_instruction', 'tap the photo.'));
+  lines.push('caption → ' + fval('s4_caption', 'a quiet moment'));
+  lines.push('secret note → ' + fval('s4_message', 'one of the quiet little moments where you unknowingly took my whole heart.'));
+  lines.push('button → ' + fval('s4_btn', 'continue reading'));
+  lines.push('');
+  lines.push('𝟶𝟽 ୵ step 5 — confession letter part 2.');
+  lines.push('salutation → ' + fval('s5_salutation', 'to amaia luna,'));
+  lines.push('letter text → ' + fval('s5_text', "to be honest, it took me so long to gather the courage to write this down. there's always that quiet fear that putting feelings into words might change things, but keeping all of this inside has become impossible. i can't keep pretending that my heart doesn't skip a beat every time i see you, or that your presence doesn't completely shift my world. i like you, amaia—deeply, genuinely, and with everything i have. i have fallen for you in a way that feels so natural yet completely overwhelming, and all i know now is that i don't want to imagine my days without you in them anymore."));
+  lines.push('button → ' + fval('s5_btn', 'there is one more thing'));
+  lines.push('');
+  lines.push('𝟶𝟾 ୵ step 6 — photo memory 02 (polaroid 2).');
+  lines.push('instruction → ' + fval('s6_instruction', "there's another thing i wanted you to see."));
+  lines.push('caption → ' + fval('s6_caption', 'with you'));
+  lines.push('secret note → ' + fval('s6_message', 'the exact moment i realized you are the only one i want to stay with.'));
+  lines.push('button → ' + fval('s6_btn', 'read the final question'));
+  lines.push('');
+  lines.push('𝟶𝟿 ୵ step 7 — final confession & proposal.');
+  lines.push('lead text → ' + fval('s7_lead', 'so after everything i’ve kept inside for so long...'));
+  lines.push('final text → ' + fval('s7_text', "i don't want to keep this as just a quiet wish in my head. i want to be there for you—in your good days, your difficult evenings, and all the mundane moments in between. i want to hold your hand, listen to everything you have to say, and cherish you the way you deserve to be cherished."));
+  lines.push('signature → ' + fval('s7_signature', '— frans philoh'));
+  lines.push('pause prompt → ' + fval('s7_pause', 'so with all my heart and sincerity...'));
+  lines.push('question → ' + fval('s7_question', 'will you be mine?'));
+  lines.push('yes button → ' + fval('s7_btn_yes', 'YES, I WILL BE YOURS'));
+  lines.push('no button → ' + fval('s7_btn_no', 'NO, SORRY'));
+  lines.push('');
+  lines.push('𝟷𝟶 ୵ photos & music. (attach 2 photos + optional mp3 directly on telegram)');
+  lines.push('');
+  lines.push('𝟷𝟷 ୵ link.');
+  lines.push('website title → ' + fval('website_title', 'something to tell you'));
+  lines.push('link option 01 : ' + (val('link1') || '(name)') + '.netlify.app');
+  lines.push('link option 02 : ' + (val('link2') || '(name)') + '.netlify.app');
+
+  return lines.join('\n');
+}
+
+// ---------- kirim ke Telegram: link dengan teks otomatis terisi ----------
+const TELEGRAM_USERNAME = 'mirssy';
+function openPrefilledTelegram(text){
+  window.open(`https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+document.getElementById('generateBtn').addEventListener('click', async ()=>{
+  const outputCard = document.getElementById('outputCard');
+  const outputText = document.getElementById('outputText');
+  const status = document.getElementById('sendStatus');
+  const msg = document.getElementById('copiedMsg');
+  const formError = document.getElementById('formError');
+
+  const check = validateForm();
+  if(!check.valid){
+    formError.textContent = `masih ada ${check.count} kolom yang belum diisi. lengkapi dulu ya ♡`;
+    formError.style.display = 'block';
+    check.firstInvalid.scrollIntoView({behavior:'smooth', block:'center'});
+    check.firstInvalid.focus({preventScroll:true});
+    return;
+  }
+  formError.style.display = 'none';
+
+  const text = buildSummaryText();
+  outputText.textContent = text;
+  outputCard.classList.add('show');
+  outputCard.scrollIntoView({behavior:'smooth', block:'start'});
+
+  try{ await navigator.clipboard.writeText(text); }catch(e){ /* tidak fatal */ }
+
+  status.textContent = 'siap dikirim ✓';
+  msg.textContent = 'teks pesanan sudah tersalin ke clipboard ♡ chat telegram sudah dibuka — tinggal paste, lalu attach 2 foto & musik langsung di situ.';
+  msg.style.display = 'block';
+
+  openPrefilledTelegram(text);
+});
+
+document.getElementById('copyBtn').addEventListener('click', async ()=>{
+  try{
+    await navigator.clipboard.writeText(document.getElementById('outputText').textContent);
+    const msg = document.getElementById('copiedMsg');
+    msg.textContent = 'tersalin ke clipboard ♡';
+    msg.style.display = 'block';
+  }catch(e){
+    alert('gagal menyalin otomatis, silakan blok teks di atas lalu salin manual.');
+  }
+});
+</script>
+</body>
+</html>
