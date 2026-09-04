@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tumblrone ‧ order form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=JetBrains+Mono:wght@400;500;600&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#0c131c;
+    --paper:#141f2e;
+    --input-bg:#0d1622;
+    --tag-bg:#1a283b;
+    --ink:#F1F5F9;
+    --stone:#94A3B8;
+    --faded:#64748B;
+    --thread:#00B8FF;
+    --accent:#00B8FF;
+    --powder:#1a283b;
+    --powder-deep:#24364e;
+    --line:#22344a;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(0,184,255,0.09), transparent 40%),
+      radial-gradient(circle at 90% 15%, rgba(10,37,64,0.7), transparent 45%),
+      var(--canvas);
+    color:var(--ink);
+    font-family:'Karla', sans-serif;
+    line-height:1.5;
+    padding-bottom:80px;
+  }
+  a{color:inherit;}
+
+  .ticket{max-width:640px; margin:36px auto 8px; padding:0 20px;}
+  .ticket-inner{
+    background:var(--paper); border-radius:var(--radius);
+    box-shadow:0 1px 2px rgba(0,0,0,0.4), 0 10px 30px rgba(0,0,0,0.5);
+    padding:34px 30px 26px; position:relative; overflow:hidden; border:1px solid var(--line);
+  }
+  .ticket-inner::before{
+    content:""; position:absolute; inset:0;
+    background:repeating-linear-gradient(90deg, transparent 0 6px, rgba(255,255,255,0.02) 6px 7px);
+    opacity:.5; pointer-events:none;
+  }
+  .stub-row{display:flex; justify-content:space-between; align-items:flex-start; gap:16px;}
+  .eyebrow{font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--thread); margin:0 0 6px;}
+  h1.title{font-family:'Fraunces', serif; font-weight:500; font-size:30px; margin:0; letter-spacing:-0.01em; line-height:1.2; color:var(--ink);}
+  h1.title em{font-style:italic; color:var(--thread); font-weight:500;}
+  .price-tag{text-align:right; font-family:'JetBrains Mono', monospace; flex-shrink:0;}
+  .price-tag .label{font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--stone);}
+  .price-tag .amount{font-size:22px; font-weight:600; color:var(--thread);}
+  .perforation{height:0; border-top:2px dashed rgba(241,241,241,0.2); margin:24px -30px 0; position:relative;}
+  .perforation::before,.perforation::after{content:""; position:absolute; top:-9px; width:18px; height:18px; border-radius:50%; background:var(--canvas);}
+  .perforation::before{left:-9px;} .perforation::after{right:-9px;}
+
+  .wrap{max-width:640px; margin:0 auto; padding:0 20px;}
+  .exhibit{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); margin-top:18px; overflow:hidden;}
+  .exhibit-head{
+    display:flex; align-items:baseline; gap:12px; padding:18px 24px 14px;
+    border-bottom:1px solid var(--line); background:linear-gradient(180deg, rgba(0,184,255,0.06), transparent);
+  }
+  .exhibit-num{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--thread); background:rgba(0,184,255,0.14); padding:3px 8px; border-radius:20px; letter-spacing:.05em;}
+  .exhibit-title{font-family:'Fraunces', serif; font-size:19px; font-weight:500; margin:0; color:var(--ink);}
+  .exhibit-note{font-size:12.5px; color:var(--stone); margin:2px 0 0 auto; text-align:right; font-style:italic;}
+  .exhibit-body{padding:20px 24px 24px; display:grid; gap:16px;}
+
+  .field{display:grid; gap:6px;}
+  .field label{font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:.04em; color:var(--stone);}
+  .field label .req{color:var(--thread);}
+  .field input[type=text], .field input[type=date], .field textarea{
+    font-family:'Karla', sans-serif; font-size:14.5px; padding:10px 12px; border-radius:9px;
+    border:1px solid var(--line); background:var(--input-bg); color:var(--ink); width:100%; resize:vertical;
+  }
+  .field input:focus, .field textarea:focus{outline:2px solid var(--thread); outline-offset:1px; background:#101c2b;}
+  .field textarea{min-height:44px;}
+  .field .default-hint{font-size:11.5px; color:var(--stone); opacity:.8;}
+  .field input.invalid, .field textarea.invalid, .link-suffix.invalid{border-color:#FF4D67 !important; background:#2E1519 !important; color:#FFF !important;}
+
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:520px){.row2{grid-template-columns:1fr;}}
+
+  .radio-group{display:flex; gap:10px;}
+  .radio-pill{flex:1; text-align:center; padding:9px 10px; border-radius:9px; border:1px solid var(--line); cursor:pointer; font-size:13.5px; background:var(--input-bg); color:var(--ink); transition:background .15s, border-color .15s;}
+  .radio-pill input{display:none;}
+  .radio-pill.active{background:rgba(0,184,255,0.22); border-color:var(--thread); font-weight:600; color:var(--ink);}
+
+  .swatches{display:flex; gap:8px; flex-wrap:wrap;}
+  .swatch{display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono', monospace; font-size:11px; background:var(--input-bg); border:1px solid var(--line); padding:5px 9px 5px 5px; border-radius:20px; color:var(--ink);}
+  .swatch i{width:16px; height:16px; border-radius:50%; display:inline-block; border:1px solid rgba(255,255,255,0.15);}
+  .palette-inputs{display:none; flex-direction:column; gap:8px;}
+  .palette-inputs.show{display:flex;}
+  .palette-row{display:flex; align-items:center; gap:8px;}
+  .palette-inputs input[type=color]{width:38px; height:38px; padding:0; border:1px solid var(--line); border-radius:9px; background:none; cursor:pointer; flex-shrink:0;}
+  .palette-inputs input[type=text]{font-family:'JetBrains Mono', monospace; font-size:13.5px; padding:9px 10px; border-radius:9px; border:1px solid var(--line); background:var(--input-bg); color:var(--ink); width:110px; text-transform:uppercase;}
+  .palette-inputs input[type=text].invalid{border-color:#FF4D67 !important; background:#2E1519 !important;}
+
+  .checkbox-line{display:flex; align-items:center; gap:9px; font-size:13.5px; background:var(--tag-bg); padding:10px 12px; border-radius:9px; color:var(--ink); border:1px solid var(--line);}
+  .checkbox-line input{width:16px; height:16px; accent-color:var(--thread);}
+
+  .note-block{border:1px dashed var(--line); border-radius:9px; padding:14px 12px; background:var(--input-bg); font-size:13px; color:var(--stone);}
+
+  .link-suffix{display:flex; align-items:center; border:1px solid var(--line); border-radius:9px; overflow:hidden; background:var(--input-bg);}
+  .link-suffix input{border:none; background:transparent; flex:1; padding:10px 12px; font-size:14.5px; font-family:'Karla',sans-serif; color:var(--ink);}
+  .link-suffix span{padding:0 12px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--stone); border-left:1px solid var(--line); align-self:stretch; display:flex; align-items:center; background:var(--tag-bg);}
+
+  .generate-block{margin-top:22px; text-align:center;}
+  .btn{font-family:'JetBrains Mono', monospace; font-size:13px; font-weight:700; letter-spacing:.04em; padding:14px 26px; border-radius:30px; border:1px solid var(--thread); background:var(--thread); color:#001935; cursor:pointer; transition:transform .15s, opacity .15s, background .15s;}
+  .btn:hover{transform:translateY(-1px); background:#38c9ff;}
+  .btn:active{transform:translateY(0);}
+  .btn.secondary{background:transparent; color:var(--ink); border-color:var(--line);}
+  .btn.secondary:hover{border-color:var(--thread); color:var(--thread); background:transparent;}
+
+  .output-card{display:none; margin-top:20px; background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:20px;}
+  .output-card.show{display:block;}
+  .output-card h3{font-family:'Fraunces', serif; font-weight:500; font-size:17px; margin:0 0 10px; color:var(--ink);}
+  .output-card pre{white-space:pre-wrap; word-break:break-word; font-family:'JetBrains Mono', monospace; font-size:12.2px; line-height:1.65; background:var(--input-bg); border:1px solid var(--line); border-radius:9px; padding:16px; max-height:340px; overflow-y:auto; color:var(--ink);}
+  .output-actions{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;}
+  .output-actions .btn{flex:1; min-width:150px;}
+  .copied-msg{font-size:12.5px; color:var(--thread); margin-top:8px; display:none; font-weight:700;}
+
+  footer.paw{text-align:center; font-size:12px; color:var(--stone); margin-top:40px; font-family:'JetBrains Mono', monospace; letter-spacing:.06em;}
+</style>
+</head>
+<body>
+
+<div class="ticket">
+  <div class="ticket-inner">
+    <div class="stub-row">
+      <div>
+        <p class="eyebrow">not a one-time sale ‧ ready-made website</p>
+        <h1 class="title">tumblrone <em>form</em> ♡</h1>
+      </div>
+      <div class="price-tag">
+        <div class="label">total</div>
+        <div class="amount" id="priceOut">Rp10.000</div>
+      </div>
+    </div>
+    <div class="perforation"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="exhibit" id="tncCard">
+    <div class="exhibit-head">
+      <span class="exhibit-num">t&c</span>
+      <h2 class="exhibit-title">terms & condition</h2>
+    </div>
+    <div class="exhibit-body" style="gap:12px;">
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(a.)</strong> please read all terms and conditions carefully before placing an order.</p>
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(b.)</strong> ready-made websites allow buyers to change names, colors, texts, music, and photos. buyers may also request simple decorations for an additional fee of idr 3,000. changing the color palette will cost an additional idr 2,000. buyers may also use wording provided by the seller, with the condition that the wording used must be exactly the same as the wording available in the catalog and will not incur any additional fee. each ready-made website design may be sold to and used by more than one buyer, meaning the purchase is not exclusive.</p>
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(c.)</strong> custom websites start from idr 10,000, with the final price depending on the complexity of the website requested by the buyer. simple revisions are allowed up to 3 times. revisions required due to seller's mistakes are free of charge. revisions exceeding 3 times or major revisions may be subject to an additional fee depending on the scope and difficulty of the changes.</p>
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(d.)</strong> full payment must be made before the website is processed. payment is accepted only through qris, with no additional payment fee.</p>
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(e.)</strong> website processing usually takes 1–7 days after payment has been made, depending on the queue and buyer's response. if you need the website to be completed within 24 hours before your deadline, an additional idr 4,000 rush fee will apply.</p>
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(f.)</strong> no refunds or cancellations are accepted after the website has been sent.</p>
+      <p style="font-size:13.5px; line-height:1.7; margin:0;"><strong>(g.)</strong> all designs, codes, and contents belong to catamourie. copying, reselling, redistributing, or claiming them as your own is strictly prohibited. by ordering through @liltz, buyers agree to all terms above.</p>
+    </div>
+  </section>
+</div>
+
+<div class="wrap" id="formRoot"></div>
+
+<div class="wrap generate-block">
+  <button class="btn" id="generateBtn">submit</button>
+  <p style="font-size:12px; color:var(--stone); margin-top:10px; font-family:'JetBrains Mono', monospace;">
+    tekan submit → teks pesanan otomatis tersalin ke clipboard & chat <a href="https://t.me/mirssy" target="_blank" rel="noopener" style="color:var(--thread); font-weight:600;">t.me/mirssy</a> kebuka, tinggal paste, lalu lampirkan 7 foto langsung di sana.
+  </p>
+  <p id="formError" style="display:none; font-size:13px; color:var(--thread); font-weight:700; margin-top:10px;"></p>
+  <div class="output-card" id="outputCard">
+    <h3>form kamu</h3>
+    <pre id="outputText"></pre>
+    <div class="output-actions">
+      <button class="btn secondary" id="copyBtn">salin teks lagi</button>
+      <a class="btn" href="https://t.me/mirssy" target="_blank" rel="noopener">buka t.me/mirssy</a>
+    </div>
+    <p id="sendStatus" style="font-size:12px; color:var(--stone); margin:10px 0 0;"></p>
+    <p class="copied-msg" id="copiedMsg"></p>
+  </div>
+</div>
+
+<footer class="paw">𓏲 ‧ thank you for trusting tumblrone ‧ 𓏲</footer>
+
+<script>
+const DEFAULT_PALETTE = ['#001935', '#0A2540', '#00B8FF', '#FFFFFF', '#1C2631', '#FF492F'];
+
+const root = document.getElementById('formRoot');
+function el(html){ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstElementChild; }
+
+function fieldRow(f){
+  if(f.long){
+    return `
+    <div class="field">
+      <label for="${f.key}">${f.label}</label>
+      <textarea id="${f.key}" data-key="${f.key}" placeholder="${f.def.replace(/"/g,'&quot;')}"></textarea>
+      <span class="default-hint">default: ${f.def.replace(/\n/g,' ')}</span>
+    </div>`;
+  }
+  return `
+  <div class="field">
+    <label for="${f.key}">${f.label}</label>
+    <input type="text" id="${f.key}" data-key="${f.key}" placeholder="${f.def.replace(/"/g,'&quot;')}">
+    <span class="default-hint">default: ${f.def}</span>
+  </div>`;
+}
+
+// ---------- 00 customer identity ----------
+root.appendChild(el(`
+<section class="exhibit">
+  <div class="exhibit-head">
+    <span class="exhibit-num">00</span>
+    <h2 class="exhibit-title">customer identity</h2>
+  </div>
+  <div class="exhibit-body">
+    <div class="row2">
+      <div class="field"><label>name <span class="req">*</span></label><input type="text" id="cust_name" data-key="cust_name" placeholder="nama kamu"></div>
+      <div class="field"><label>username <span class="req">*</span></label><input type="text" id="cust_username" data-key="cust_username" placeholder="@username"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>payment</label><input type="text" value="qris no rate" disabled></div>
+      <div class="field"><label>deadline <span class="req">*</span></label><input type="date" id="deadline" data-key="deadline"></div>
+    </div>
+    <label class="checkbox-line">
+      <input type="checkbox" id="rush">
+      need it done within 24 hours before deadline (+4.000 rush fee — poin (e) t&c)
+    </label>
+  </div>
+</section>`));
+
+// ---------- 01 custom color palette ----------
+const paletteRowsHtml = DEFAULT_PALETTE.map((hex,i)=>`
+        <div class="palette-row">
+          <input type="color" value="${hex}" data-idx="${i}" data-pair="hex${i}">
+          <input type="text" id="hex${i}" value="${hex}" maxlength="7" placeholder="${hex}">
+        </div>`).join('');
+
+root.appendChild(el(`
+<section class="exhibit">
+  <div class="exhibit-head">
+    <span class="exhibit-num">01</span>
+    <h2 class="exhibit-title">custom color palette</h2>
+    <p class="exhibit-note">recolor +2.000</p>
+  </div>
+  <div class="exhibit-body">
+    <div class="field">
+      <label>recolor</label>
+      <div class="radio-group">
+        <label class="radio-pill" id="pillNo"><input type="radio" name="recolor" value="no" checked>no</label>
+        <label class="radio-pill" id="pillYes"><input type="radio" name="recolor" value="yes">yes</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>default palette</label>
+      <div class="swatches" id="defaultSwatches"></div>
+    </div>
+    <div class="field">
+      <label>new palette</label>
+      <div class="palette-inputs" id="paletteInputs">${paletteRowsHtml}</div>
+    </div>
+  </div>
+</section>`));
+
+const swatchWrap = document.getElementById('defaultSwatches');
+DEFAULT_PALETTE.forEach(hex=>{
+  swatchWrap.appendChild(el(`<span class="swatch"><i style="background:${hex}"></i>${hex}</span>`));
+});
+document.querySelectorAll('input[name=recolor]').forEach(r=>{
+  r.addEventListener('change', ()=>{
+    document.getElementById('pillYes').classList.toggle('active', r.value==='yes' && r.checked);
+    document.getElementById('pillNo').classList.toggle('active', r.value==='no' && r.checked);
+    document.getElementById('paletteInputs').classList.toggle('show', document.querySelector('input[name=recolor]:checked').value==='yes');
+    updatePrice();
+  });
+});
+document.getElementById('pillNo').classList.add('active');
+
+document.querySelectorAll('#paletteInputs input[type=color]').forEach(colorInput=>{
+  const hexInput = document.getElementById(colorInput.dataset.pair);
+  colorInput.addEventListener('input', ()=>{
+    hexInput.value = colorInput.value.toUpperCase();
+    hexInput.classList.remove('invalid');
+  });
+});
+document.querySelectorAll('#paletteInputs input[type=text]').forEach(hexInput=>{
+  hexInput.addEventListener('input', ()=>{
+    let v = hexInput.value.trim();
+    if(v && !v.startsWith('#')) v = '#' + v;
+    hexInput.value = v.toUpperCase();
+    const valid = /^#[0-9A-F]{6}$/.test(hexInput.value);
+    hexInput.classList.toggle('invalid', !valid && hexInput.value !== '');
+    if(valid){
+      const colorInput = document.querySelector(`#paletteInputs input[type=color][data-pair="${hexInput.id}"]`);
+      colorInput.value = hexInput.value;
+    }
+  });
+});
+
+const SECTIONS = [
+  { id:'02', title:'core identity & profiles', fields:[
+    {key:'sender_name', label:'sender display name (e.g. Keith.)', def:'Keith.'},
+    {key:'sender_handle', label:'sender username (e.g. @keonho)', def:'@keonho'},
+    {key:'recipient_name', label:'recipient display name (e.g. keisha!)', def:'keisha!'},
+    {key:'recipient_handle', label:'recipient username (e.g. @kya)', def:'@kya'},
+    {key:'occasion', label:'celebration milestone', def:'3 Months / Mensive'},
+    {key:'occasion_date', label:'celebration date (e.g. September 1, 2026)', def:'September 1, 2026'},
+  ]},
+  { id:'03', title:'post 1 — masterpost (entry)', fields:[
+    {key:'p1_badge', label:'top badge label', def:'private archive, for your eyes only'},
+    {key:'p1_title', label:'masterpost title', def:"KEITH'S FAVORITES"},
+    {key:'p1_subtitle', label:'masterpost subtitle', def:'a ridiculously biased list.'},
+    {key:'p1_quote', label:'featured quote block', def:'“made this whole page because you somehow made my whole world so much softer.”', long:true},
+    {key:'p1_photo_cap', label:'photo 1 caption', def:'the face that started it all, still my favorite view'},
+    {key:'p1_photo_meta', label:'photo 1 meta tag', def:"SAVED ARCHIVE, KEITH'S CAMERA ROLL"},
+    {key:'p1_btn', label:'read full masterpost button', def:'open the archive (4 items)'},
+  ]},
+  { id:'04', title:'post 2 — the favorites list (evidence)', fields:[
+    {key:'p2_title', label:'post title', def:'THE LIST'},
+    {key:'p2_sublabel', label:'post sublabel', def:'the person behind every single good thing lately'},
+    {key:'p2_item1_prompt', label:'item 01 prompt', def:'person i text the second i wake up'},
+    {key:'p2_item1_reveal', label:'item 01 reveal', def:'you, obviously.'},
+    {key:'p2_item2_prompt', label:'item 02 prompt', def:'person whose snacks i always share'},
+    {key:'p2_item2_reveal', label:'item 02 reveal', def:'still you.'},
+    {key:'p2_item3_prompt', label:'item 03 prompt', def:'person i miss even when you just left'},
+    {key:'p2_item3_reveal', label:'item 03 reveal', def:'you already knew that.'},
+    {key:'p2_item4_prompt', label:'item 04 prompt', def:"person i'd choose over and over again"},
+    {key:'p2_item4_reveal', label:'item 04 reveal', def:'keisha!!!'},
+    {key:'p2_photo_cap', label:'photo 2 caption', def:'eating pizza and looking this cute should actually be illegal'},
+    {key:'p2_photo_meta', label:'photo 2 meta tag', def:'CAUGHT ON CAMERA'},
+    {key:'p2_btn', label:'continue button', def:'you see the pattern now'},
+  ]},
+  { id:'05', title:'post 3 — tumblr poll & portrait reveal', fields:[
+    {key:'p3_eyebrow', label:'top eyebrow', def:'ONE QUICK QUESTION'},
+    {key:'p3_question', label:'poll question', def:'who is literally all i think about lately?'},
+    {key:'p3_opt1_label', label:'option 1 label (98.4%)', def:'keisha!'},
+    {key:'p3_opt1_response', label:'option 1 response', def:'obviously.'},
+    {key:'p3_opt2_label', label:'option 2 label (0.8%)', def:'someone else'},
+    {key:'p3_opt2_response', label:'option 2 response', def:'be serious right now.'},
+    {key:'p3_opt3_label', label:'option 3 label (0.8%)', def:'no idea tell me'},
+    {key:'p3_opt3_response', label:'option 3 response', def:"as if you don't already know."},
+    {key:'p3_verdict_title', label:'verdict title', def:"it's keisha!"},
+    {key:'p3_verdict_sub', label:'verdict subtext', def:'as if it could ever be anyone else.'},
+    {key:'p3_photo_cap', label:'photo 3 caption', def:'the prettiest girl in my camera roll, no competition'},
+    {key:'p3_photo_meta', label:'photo 3 attribution', def:'saved by @keonho'},
+    {key:'p3_btn', label:'continue button', def:'keep reading the feed'},
+  ]},
+  { id:'06', title:'post 4 — 3 months timeline & milestone', fields:[
+    {key:'p4_eyebrow', label:'top eyebrow', def:'HOW LONG HAVE WE BEEN US?'},
+    {key:'p4_step1_micro', label:'month 01 note', def:'the day everything started making sense.'},
+    {key:'p4_step2_micro', label:'month 02 note', def:'falling for you a little more every day.'},
+    {key:'p4_step3_micro', label:'month 03 note', def:"still us, and you still light up every room you're in."},
+    {key:'p4_milestone_badge', label:'milestone badge', def:'03 MONTHS WITH YOU'},
+    {key:'p4_milestone_date', label:'milestone date', def:'SEPTEMBER 01, 2026'},
+    {key:'p4_milestone_callout', label:'milestone callout', def:"that's today."},
+    {key:'p4_milestone_sub', label:'milestone sweet subtext', def:"and you're still the best thing that's ever happened to me."},
+    {key:'p4_photo_cap', label:'photo 4 caption', def:'three months of late night dates and i still get butterflies'},
+    {key:'p4_photo_meta', label:'photo 4 attribution', def:'3RD MONTH MILESTONE'},
+    {key:'p4_btn', label:'continue button', def:'one last thing for you'},
+  ]},
+  { id:'07', title:'post 5 — final love note & confession', fields:[
+    {key:'p7_eyebrow', label:'top eyebrow', def:'ONE LAST THING'},
+    {key:'p7_prompt_intro', label:'prompt intro lead', def:'so, keisha!...'},
+    {key:'p7_question', label:'final question', def:"who's the only one keith will ever want?"},
+    {key:'p7_accepted_badge', label:'verified badge text', def:'VERIFIED TRUTH'},
+    {key:'p7_accepted_answer', label:'accepted answer name', def:'keisha!'},
+    {key:'p7_accepted_sub', label:'accepted answer subtext', def:'always was, always will be.'},
+    {key:'p7_line1', label:'note line 1', def:'happy 3 months, keisha!'},
+    {key:'p7_line2', label:'note line 2 (highlighted)', def:"you're my favorite person in the entire world, hands down.", long:true},
+    {key:'p7_signature', label:'author signature', def:'Keith.'},
+    {key:'p7_photo_cap', label:'photo 5 caption', def:'always running straight into my arms, forever my favorite person'},
+    {key:'p7_footer_status', label:'colophon footer status', def:"keith's favorites, end of list"},
+  ]},
+];
+
+SECTIONS.forEach(sec=>{
+  const fieldsHtml = sec.fields.map(f=>fieldRow(f)).join('');
+  const card = el(`
+  <section class="exhibit">
+    <div class="exhibit-head">
+      <span class="exhibit-num">${sec.id}</span>
+      <h2 class="exhibit-title">${sec.title}</h2>
+    </div>
+    <div class="exhibit-body">${fieldsHtml}</div>
+  </section>`);
+  root.appendChild(card);
+});
+
+// ---------- 08 photos ----------
+root.appendChild(el(`
+<section class="exhibit">
+  <div class="exhibit-head">
+    <span class="exhibit-num">08</span>
+    <h2 class="exhibit-title">photos</h2>
+    <p class="exhibit-note">7 foto total</p>
+  </div>
+  <div class="exhibit-body">
+    <div class="note-block">
+      lampirkan 7 foto langsung di telegram sesudah submit form:<br>
+      • <strong>avatar-keith.jpg</strong> — foto profil Keith (rasio 1:1 persegi)<br>
+      • <strong>avatar-keisha.jpg</strong> — foto profil Keisha (rasio 1:1 persegi)<br>
+      • <strong>photo-entry.jpg</strong> — foto post 1 (cover masterpost)<br>
+      • <strong>photo-list.jpg</strong> — foto post 2 (hal favorit / candid)<br>
+      • <strong>photo-01.jpg</strong> — foto post 3 (potret hasil polling)<br>
+      • <strong>photo-02.jpg</strong> — foto post 4 (momen 3 bulan)<br>
+      • <strong>photo-final.jpg</strong> — foto post 5 (foto penutup / pelukan)
+    </div>
+  </div>
+</section>`));
+
+// ---------- 09 link ----------
+root.appendChild(el(`
+<section class="exhibit">
+  <div class="exhibit-head">
+    <span class="exhibit-num">09</span>
+    <h2 class="exhibit-title">link</h2>
+    <p class="exhibit-note">2 opsi wajib diisi</p>
+  </div>
+  <div class="exhibit-body">
+    <div class="field">
+      <label>website title</label>
+      <input type="text" id="website_title" data-key="website_title" placeholder="keonho: Keith's Favorites">
+    </div>
+    <div class="field">
+      <label>custom link option 01 <span class="req">*</span></label>
+      <div class="link-suffix"><input type="text" id="link1" placeholder="nama"><span>.netlify.app</span></div>
+    </div>
+    <div class="field">
+      <label>custom link option 02 <span class="req">*</span></label>
+      <div class="link-suffix"><input type="text" id="link2" placeholder="nama"><span>.netlify.app</span></div>
+    </div>
+    <p class="default-hint">note: link seperti tumblrone.netlify.app hanya bisa dipakai oleh satu website, jadi kasih 2 opsi ya!</p>
+  </div>
+</section>`));
+
+// ---------- price ----------
+function updatePrice(){
+  let total = 10000;
+  if(document.querySelector('input[name=recolor]:checked').value==='yes') total += 2000;
+  if(document.getElementById('rush').checked) total += 4000;
+  document.getElementById('priceOut').textContent = 'Rp' + total.toLocaleString('id-ID');
+}
+document.getElementById('rush').addEventListener('change', updatePrice);
+updatePrice();
+
+// ---------- validasi ----------
+function validateForm(){
+  let firstInvalid = null;
+  const invalidEls = [];
+  document.querySelectorAll('.field input[type=text], .field input[type=date], .field textarea').forEach(el=>{
+    const empty = !el.value.trim();
+    el.classList.toggle('invalid', empty);
+    if(empty){ invalidEls.push(el); if(!firstInvalid) firstInvalid = el; }
+  });
+  document.querySelectorAll('.link-suffix').forEach(wrap=>{
+    const input = wrap.querySelector('input');
+    const empty = !input.value.trim();
+    wrap.classList.toggle('invalid', empty);
+    if(empty){ invalidEls.push(input); if(!firstInvalid) firstInvalid = input; }
+  });
+  return { valid: invalidEls.length === 0, firstInvalid, count: invalidEls.length };
+}
+document.addEventListener('input', (e)=>{
+  if(e.target.matches('.field input, .field textarea')) e.target.classList.remove('invalid');
+  if(e.target.closest('.link-suffix')) e.target.closest('.link-suffix').classList.remove('invalid');
+});
+
+// ---------- generate summary ----------
+function val(id, fallback){
+  const e = document.getElementById(id);
+  if(!e) return fallback||'';
+  const v = e.value.trim();
+  return v ? v : (fallback||'');
+}
+function fval(key, def){
+  const e = document.querySelector(`[data-key="${key}"]`);
+  const v = e ? e.value.trim() : '';
+  return v ? v : def;
+}
+
+function buildSummaryText(){
+  const recolor = document.querySelector('input[name=recolor]:checked').value;
+  const rush = document.getElementById('rush').checked;
+  let newPaletteLine = '';
+  if(recolor==='yes'){
+    const hexes = Array.from(document.querySelectorAll('#paletteInputs input[type=text]')).map(i=>i.value.trim().toUpperCase());
+    newPaletteLine = hexes.join(', ');
+  }
+
+  const lines = [];
+  lines.push('𓏲 tumblrone form ♡');
+  lines.push('website price : ' + document.getElementById('priceOut').textContent);
+  lines.push('');
+  lines.push('𝟶𝟶 ୵ customer identity.');
+  lines.push('name : ' + val('cust_name'));
+  lines.push('username : ' + val('cust_username'));
+  lines.push('payment : qris no rate.');
+  lines.push('deadline : ' + val('deadline') + (rush ? ' (rush — within 24h before deadline, +4.000)' : ''));
+  lines.push('');
+  lines.push('𝟶𝟷 ୵ custom color palette.');
+  lines.push('recolor : ' + recolor);
+  lines.push('default palette : ' + DEFAULT_PALETTE.join(', '));
+  lines.push('new palette : ' + (newPaletteLine || '-'));
+  lines.push('');
+  lines.push('𝟶𝟸 ୵ core identity & profiles.');
+  lines.push('sender display name → ' + fval('sender_name', 'Keith.'));
+  lines.push('sender username → ' + fval('sender_handle', '@keonho'));
+  lines.push('recipient display name → ' + fval('recipient_name', 'keisha!'));
+  lines.push('recipient username → ' + fval('recipient_handle', '@kya'));
+  lines.push('celebration milestone → ' + fval('occasion', '3 Months / Mensive'));
+  lines.push('celebration date → ' + fval('occasion_date', 'September 1, 2026'));
+  lines.push('');
+  lines.push('𝟶𝟹 ୵ post 1 — masterpost (entry).');
+  lines.push('badge → ' + fval('p1_badge', 'private archive, for your eyes only'));
+  lines.push('title → ' + fval('p1_title', "KEITH'S FAVORITES"));
+  lines.push('subtitle → ' + fval('p1_subtitle', 'a ridiculously biased list.'));
+  lines.push('quote → ' + fval('p1_quote', '“made this whole page because you somehow made my whole world so much softer.”'));
+  lines.push('photo 1 caption → ' + fval('p1_photo_cap', 'the face that started it all, still my favorite view'));
+  lines.push('photo 1 meta → ' + fval('p1_photo_meta', "SAVED ARCHIVE, KEITH'S CAMERA ROLL"));
+  lines.push('button → ' + fval('p1_btn', 'open the archive (4 items)'));
+  lines.push('');
+  lines.push('𝟶𝟺 ୵ post 2 — the favorites list.');
+  lines.push('title → ' + fval('p2_title', 'THE LIST'));
+  lines.push('sublabel → ' + fval('p2_sublabel', 'the person behind every single good thing lately'));
+  lines.push('item 01 → ' + fval('p2_item1_prompt', 'person i text the second i wake up') + ' : "' + fval('p2_item1_reveal', 'you, obviously.') + '"');
+  lines.push('item 02 → ' + fval('p2_item2_prompt', 'person whose snacks i always share') + ' : "' + fval('p2_item2_reveal', 'still you.') + '"');
+  lines.push('item 03 → ' + fval('p2_item3_prompt', 'person i miss even when you just left') + ' : "' + fval('p2_item3_reveal', 'you already knew that.') + '"');
+  lines.push('item 04 → ' + fval('p2_item4_prompt', "person i'd choose over and over again") + ' : "' + fval('p2_item4_reveal', 'keisha!!!') + '"');
+  lines.push('photo 2 caption → ' + fval('p2_photo_cap', 'eating pizza and looking this cute should actually be illegal'));
+  lines.push('button → ' + fval('p2_btn', 'you see the pattern now'));
+  lines.push('');
+  lines.push('𝟶𝟻 ୵ post 3 — tumblr poll.');
+  lines.push('question → ' + fval('p3_question', 'who is literally all i think about lately?'));
+  lines.push('option 1 → ' + fval('p3_opt1_label', 'keisha!') + ' (98.4%) : "' + fval('p3_opt1_response', 'obviously.') + '"');
+  lines.push('option 2 → ' + fval('p3_opt2_label', 'someone else') + ' (0.8%) : "' + fval('p3_opt2_response', 'be serious right now.') + '"');
+  lines.push('option 3 → ' + fval('p3_opt3_label', 'no idea tell me') + ' (0.8%) : "' + fval('p3_opt3_response', "as if you don't already know.") + '"');
+  lines.push('verdict → ' + fval('p3_verdict_title', "it's keisha!") + ' (' + fval('p3_verdict_sub', 'as if it could ever be anyone else.') + ')');
+  lines.push('photo 3 caption → ' + fval('p3_photo_cap', 'the prettiest girl in my camera roll, no competition'));
+  lines.push('button → ' + fval('p3_btn', 'keep reading the feed'));
+  lines.push('');
+  lines.push('𝟶𝟼 ୵ post 4 — 3 months timeline.');
+  lines.push('month 01 → ' + fval('p4_step1_micro', 'the day everything started making sense.'));
+  lines.push('month 02 → ' + fval('p4_step2_micro', 'falling for you a little more every day.'));
+  lines.push('month 03 → ' + fval('p4_step3_micro', "still us, and you still light up every room you're in."));
+  lines.push('milestone badge → ' + fval('p4_milestone_badge', '03 MONTHS WITH YOU') + ' (' + fval('p4_milestone_date', 'SEPTEMBER 01, 2026') + ')');
+  lines.push('milestone message → ' + fval('p4_milestone_callout', "that's today.") + ' — ' + fval('p4_milestone_sub', "and you're still the best thing that's ever happened to me."));
+  lines.push('photo 4 caption → ' + fval('p4_photo_cap', 'three months of late night dates and i still get butterflies'));
+  lines.push('button → ' + fval('p4_btn', 'one last thing for you'));
+  lines.push('');
+  lines.push('𝟶𝟽 ୵ post 5 — final love note.');
+  lines.push('question → ' + fval('p7_question', "who's the only one keith will ever want?"));
+  lines.push('answer → ' + fval('p7_accepted_answer', 'keisha!') + ' (' + fval('p7_accepted_sub', 'always was, always will be.') + ')');
+  lines.push('note line 1 → ' + fval('p7_line1', 'happy 3 months, keisha!'));
+  lines.push('note line 2 → ' + fval('p7_line2', "you're my favorite person in the entire world, hands down."));
+  lines.push('signature → ' + fval('p7_signature', 'Keith.'));
+  lines.push('photo 5 caption → ' + fval('p7_photo_cap', 'always running straight into my arms, forever my favorite person'));
+  lines.push('footer status → ' + fval('p7_footer_status', "keith's favorites, end of list"));
+  lines.push('');
+  lines.push('𝟶𝟾 ୵ photos. (7 foto dilampirkan terpisah di telegram)');
+  lines.push('');
+  lines.push('𝟶𝟿 ୵ link.');
+  lines.push('website title → ' + fval('website_title', "keonho: Keith's Favorites"));
+  lines.push('link option 01 : ' + (val('link1') || '(nama)') + '.netlify.app');
+  lines.push('link option 02 : ' + (val('link2') || '(nama)') + '.netlify.app');
+
+  return lines.join('\n');
+}
+
+// ---------- kirim ke Telegram: link dengan teks otomatis terisi (murni statis) ----------
+const TELEGRAM_USERNAME = 'mirssy';
+function openPrefilledTelegram(text){
+  window.open(`https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+document.getElementById('generateBtn').addEventListener('click', async ()=>{
+  const outputCard = document.getElementById('outputCard');
+  const outputText = document.getElementById('outputText');
+  const status = document.getElementById('sendStatus');
+  const msg = document.getElementById('copiedMsg');
+  const formError = document.getElementById('formError');
+
+  const check = validateForm();
+  if(!check.valid){
+    formError.textContent = `masih ada ${check.count} kolom yang belum diisi. lengkapi dulu ya ♡`;
+    formError.style.display = 'block';
+    check.firstInvalid.scrollIntoView({behavior:'smooth', block:'center'});
+    check.firstInvalid.focus({preventScroll:true});
+    return;
+  }
+  formError.style.display = 'none';
+
+  const text = buildSummaryText();
+  outputText.textContent = text;
+  outputCard.classList.add('show');
+  outputCard.scrollIntoView({behavior:'smooth', block:'start'});
+
+  try{ await navigator.clipboard.writeText(text); }catch(e){ /* tidak fatal */ }
+
+  status.textContent = 'siap dikirim ✓';
+  msg.textContent = 'teks pesanan sudah tersalin ke clipboard ♡ chat telegram sudah dibuka — tinggal paste, lalu attach 7 foto langsung di situ.';
+  msg.style.display = 'block';
+
+  openPrefilledTelegram(text);
+});
+
+document.getElementById('copyBtn').addEventListener('click', async ()=>{
+  try{
+    await navigator.clipboard.writeText(document.getElementById('outputText').textContent);
+    const msg = document.getElementById('copiedMsg');
+    msg.textContent = 'tersalin ke clipboard ♡';
+    msg.style.display = 'block';
+  }catch(e){
+    alert('gagal menyalin otomatis, silakan blok teks di atas lalu salin manual.');
+  }
+});
+</script>
+</body>
+</html>
