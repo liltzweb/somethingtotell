@@ -39,7 +39,7 @@
 
 1. **Ticket Stub Header**:
    - Tampilan tiket estetik dengan perforasi garis putus-putus.
-   - Total harga terkalkulasi secara otomatis dan real-time.
+   - Total harga terkalkulasi secara otomatis dan real-time (`Rp7.000` base).
 
 2. **Validasi & Color Picker Dinamis**:
    - Pilihan recolor interaktif dengan 6 color picker terhubung ke input kode HEX.
@@ -56,7 +56,7 @@
    - `07` ୵ **Step 5 — Confession Letter Part 2** (Salutation kelanjutan, isi paragraf pengakuan rentan & niat tulus, tombol lanjut).
    - `08` ୵ **Step 6 — Photo Memory 02** (Instruksi tap polaroid ke-2, caption depan foto, pesan rahasia di balik foto ke-2, tombol lanjut).
    - `09` ୵ **Step 7 — Final Confession & Proposal** (Lead quote, kalimat penutup cinta, tanda tangan penembak, jeda, pertanyaan pengakuan *"will you be mine?"*, tombol pilihan *"YES, I WILL BE YOURS"* & *"NO, SORRY"*).
-   - `10` ୵ **Lampiran Foto** (Catatan instruksi melampirkan 2 foto portrait/square langsung via Telegram).
+   - `10` ୵ **Lampiran Foto & Musik** (Catatan instruksi melampirkan 2 foto portrait/square & 1 lagu format .mp3 langsung via Telegram).
    - `11` ୵ **Link Website** (Judul tab browser, 2 pilihan custom subdomain `.netlify.app`).
 
 4. **Satu Klik Salin & Buka Telegram**:
@@ -78,14 +78,30 @@ SOMETHINGTOTELL/
 ├── css/
 │   └── style.css       # Styling CSS lengkap & responsif mobile/desktop
 ├── js/
-│   ├── config.js       # Konfigurasi data konten, nama Frans & Amaia, chat Telegram
-│   ├── audio.js        # Web Audio API organic sound effects synthesizer
-│   └── app.js          # Logika transisi, flip polaroid 3D, auto-copy & redirect
+│   ├── config.js       # Konfigurasi data konten, nama Frans & Amaia, chat Telegram, audio
+│   ├── audio.js        # Web Audio API procedural SFX & Background Music Player
+│   └── app.js          # Logika transisi, flip polaroid 3D, auto-copy & redirect, tombol back
 └── assets/
+    ├── audio/          # Tempat file musik latar belakang
+    │   └── music.mp3   # File lagu MP3 kamu (rename jadi music.mp3)
     └── photos/         # Foto polaroid kenangan 1 & 2
         ├── photo-1.jpg
         └── photo-2.jpg
 ```
+
+---
+
+## 🎵 Panduan Menambahkan Musik Latar (Background Music)
+
+Untuk menambahkan musik latar ke website pengakuan:
+1. Siapkan file lagu favorit berformat **`.mp3`**.
+2. Masukkan file tersebut ke dalam folder:  
+   📂 **`assets/audio/`**
+3. Ganti nama filenya (*rename*) menjadi:  
+   📄 **`music.mp3`**  
+   *(Sehingga letak path-nya adalah: `assets/audio/music.mp3`)*
+4. Musik akan **otomatis mulai berputar** lembut (*smooth fade-in*) saat penerima menekan tombol pembuka / amplop surat, dan penerima juga dapat memutar/menjeda musik melalui tombol piringan hitam (*vinyl disc*) di pojok kanan atas.
+5. Pengaturan volume, putar berulang (*loop*), atau ganti path file dapat diatur kapan saja di [`js/config.js`](file:///d:/LILTZ/SOMETHINGTOTELL/js/config.js) pada bagian `music`.
 
 ---
 
